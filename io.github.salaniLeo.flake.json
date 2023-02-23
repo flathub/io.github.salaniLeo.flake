@@ -161,6 +161,7 @@
             "buildsystem" : "meson",
             "sources" : [
                 {
+
                     "type" : "git",
                     "url" : "https://github.com/SalaniLeo/Flake-flatpak-repo.git",
                     "tag" : "0.0.4",
