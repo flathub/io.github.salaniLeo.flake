@@ -12,24 +12,20 @@
         "--socket=wayland",
         "--filesystem=home"
     ],
+    "build-options" : {
+        "env" : {
+            "V" : "1",
+            "BASH_COMPLETIONSDIR" : "/app/share/bash-completion/completions",
+            "MOUNT_FUSE_PATH" : "../tmp/"
+        }
+    },
     "cleanup" : [
         "/include",
-        "/lib/pkgconfig",
-        "/man",
         "/share/doc",
-        "/share/gtk-doc",
-        "/share/man",
-        "/share/pkgconfig",
-        "*.la",
-        "*.a"
+        "/share/gtk-doc"
     ],
     "modules" : [
-{
-    "name": "python3",
-    "buildsystem": "simple",
-    "build-commands": [],
-    "modules": [
-        {
+       {
             "name": "python3-sphinx",
             "buildsystem": "simple",
             "build-commands": [
@@ -160,8 +156,6 @@
             "url": "https://files.pythonhosted.org/packages/bc/07/830784e061fb94d67649f3e438ff63cfb902dec6d48ac75aeaaac7c7c30e/Pillow-9.4.0.tar.gz",
             "sha256": "a1c2d7780448eb93fbcc3789bf3916aa5720d942e37945f4056680317f1cd23e"
           }
-            ]
-          }
     	 ]
 	},
         {
@@ -169,7 +163,6 @@
             "buildsystem" : "meson",
             "sources" : [
                 {
-
                     "type" : "git",
                     "url" : "https://github.com/SalaniLeo/Flake-flatpak-repo.git",
                     "tag" : "0.1.0",
