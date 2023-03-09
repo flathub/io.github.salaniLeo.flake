@@ -5,7 +5,10 @@
     "sdk" : "org.gnome.Sdk",
     "command" : "flake",
     "finish-args" : [
-        "--talk-name=org.freedesktop.Flatpak",
+        "--system-talk-name=org.freedesktop.PolicyKit1",
+        "--system-talk-name=org.freedesktop.Avahi",
+        "--talk-name=org.freedesktop.FileManager1",
+        "--talk-name=org.freedesktop.PackageKit",
         "--device=dri",
         "--share=ipc",
         "--socket=fallback-x11",
