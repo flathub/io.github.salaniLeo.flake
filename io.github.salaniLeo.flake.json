@@ -1,15 +1,18 @@
 {
-    "app-id" : "io.github.salaniLeo.flake",
+    "app-id" : "dev.salaniLeo.immagini",
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "43",
     "sdk" : "org.gnome.Sdk",
-    "command" : "flake",
+    "command" : "immagini",
     "finish-args" : [
+        "--device=dri",
         "--share=ipc",
         "--socket=fallback-x11",
         "--socket=wayland",
         "--filesystem=home",
-        "--socket=session-bus"
+        "--socket=session-bus",
+        "--socket=system-bus",
+        "--talk-name=org.freedesktop.Flatpak"
     ],
     "build-options" : {
         "env" : {
@@ -24,7 +27,63 @@
         "/share/gtk-doc"
     ],
     "modules" : [
-       {
+{
+    "name": "python3",
+    "buildsystem": "simple",
+    "build-commands": [],
+    "modules": [
+        {
+            "name" : "libfuse",
+            "config-opts" : [
+                "UDEV_RULES_PATH=/app/etc/udev/rules.d",
+                "INIT_D_PATH=/app/etc/init.d"
+            ],
+            "cleanup" : [
+                "/bin/ulockmgr_server"
+            ],
+            "post-install" : [
+                "install -m a+rx fusermount-wrapper.sh /app/bin/fusermount"
+            ],
+            "sources" : [
+                {
+                    "name" : "uncrustify",
+                    "buildsystem" : "cmake-ninja",
+                    "config-opts" : [
+                        "-DCMAKE_BUILD_TYPE=Release"
+                    ],
+                    "builddir" : true,
+                    "sources" : [
+                        {
+                            "type" : "archive",
+                            "url" : "https://github.com/uncrustify/uncrustify/archive/uncrustify-0.71.0.tar.gz",
+                            "sha256" : "403a0f34463c0d6b0fbf230d8a03b7af9f493faa235208417793350db062003c"
+                        }
+                    ]
+                },
+                {
+                    "type" : "archive",
+                    "url" : "https://github.com/libfuse/libfuse/releases/download/fuse-2.9.9/fuse-2.9.9.tar.gz",
+                    "sha256" : "d0e69d5d608cc22ff4843791ad097f554dd32540ddc9bed7638cc6fea7c1b4b5"
+                },
+                {
+                    "type" : "patch",
+                    "path" : "build-aux/flatpak/fuse-2.9.2-namespace-conflict-fix.patch"
+                },
+                {
+                    "type" : "patch",
+                    "path" : "build-aux/flatpak/fuse-disable-sys-mount-under-flatpak.patch"
+                },
+                {
+                    "type" : "patch",
+                    "path" : "build-aux/flatpak/fuse-2.9.2-closefrom.patch"
+                },
+                {
+                    "type" : "file",
+                    "path" : "build-aux/flatpak/fusermount-wrapper.sh"
+                }
+            ]
+        },
+        {
             "name": "python3-sphinx",
             "buildsystem": "simple",
             "build-commands": [
@@ -155,15 +214,17 @@
             "url": "https://files.pythonhosted.org/packages/bc/07/830784e061fb94d67649f3e438ff63cfb902dec6d48ac75aeaaac7c7c30e/Pillow-9.4.0.tar.gz",
             "sha256": "a1c2d7780448eb93fbcc3789bf3916aa5720d942e37945f4056680317f1cd23e"
           }
-    	 ]
+            ]
+          }
+         ]
 	},
         {
-            "name" : "flake",
+            "name" : "immagini",
             "buildsystem" : "meson",
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "https://github.com/SalaniLeo/Flake-flatpak-repo.git",
+                    "url" : "https://github.com/SalaniLeo/Flake-flatpak-repo",
                     "tag" : "0.1.0",
                     "commit" : "3b7d3d7d7ba28ac9ca52d1715a197c7f45eefaef"
                 }
